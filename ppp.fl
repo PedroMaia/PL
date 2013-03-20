@@ -1,0 +1,40 @@
+
+%option noyywrap
+
+%%
+
+\\latex
+
+\\endlatex
+
+\\html
+
+\\endhtml
+
+=titulo=\[[^\]]\]
+
+=autor=\[[^\]\]
+
+=indice=
+
+=+.*
+
+\\bf\{[^\}]\}
+
+\\it\{[^\}]\}
+
+\\emph\{[^\}]\}
+
+
+
+
+%%
+
+int main(){
+
+	yylex();
+	return 0;
+
+}
+
+
