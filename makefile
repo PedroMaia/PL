@@ -5,4 +5,4 @@ ppp.o:ppp.c
 	gcc ppp.c -c
 
 ppp.c:ppp.fl
-	flex ppp.lf
+	flex ppp.fl
