@@ -1,5 +1,14 @@
+%{
+
+	char* out;
+
+
+%}
+
 
 %option noyywrap
+
+%option outfile="ppp.c"
 
 %%
 
@@ -30,8 +39,9 @@
 
 %%
 
-int main(){
-
+int main(int argc, char** argv){
+	
+	
 	yylex();
 	return 0;
 
