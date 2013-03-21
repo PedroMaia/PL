@@ -1,10 +1,13 @@
+%x LATEX HTML VERBATIM LISTA TABELA TEXTO
+
 %{
 	#include "lList.h"
 	
-	int context=TEXTO;
+	int context=0;
 	lList stack=NULL;
-	comeca(int new_context);
-	termina();
+	void comeca(int new_context);
+	void termina();
+	char buf[1000];
 %}
 
 
@@ -12,36 +15,46 @@
 
 %option outfile="ppp.c"
 
-%x LATEX HTML VERBATIM LISTA TABELA TEXTO
+
 
 %%
+	int len=0;
+	context=TEXTO;
+	BEGIN(TEXTO);
+
 	
 
-	begin(TEXTO)
+<TEXTO,LISTA,TABELA>\\latex	{comeca(LATEX);}
 
-	
+<LATEX>.|\n	ECHO;
 
-<TEXTO,LISTA,TABELA>\\latex	
+<LATEX>\\endlatex	{termina();}
 
-\\endlatex
 
-\\html
 
-\\endhtml
 
-=titulo=\[[^\]]\]
+<TEXTO,LISTA,TABELA>\\html {comeca(HTML);}
 
-=autor=\[[^\]\]
+<HTML>.|\n	{}
+
+<HTML>\\endhtml	{termina();}
+
+
+
+
+<TEXTO>=titulo=\[[^\]]*\]	{len=strlen(yytext)-10; strncpy(buf,yytext+9,len);buf[len]='\0'; printf("\\title{%s}",buf);}
+
+=autor=\[[^\]]*\]
 
 =indice=
 
 =+.*
 
-\\bf\{[^\}]\}
+\\bf\{[^\}]*\}
 
-\\it\{[^\}]\}
+\\it\{[^\}]*\}
 
-\\emph\{[^\}]\}
+\\emph\{[^\}]*\}
 
 \\noperp
 
@@ -91,13 +104,17 @@ int main(int argc, char** argv){
 
 }
 
-comeca(int new_context){
+void null_delete(void* e){
+	return;
+}
+
+void comeca(int new_context){
 	push(stack, &context, sizeof(int));
-	begin(new_context);
+	BEGIN(new_context);
 	context=new_context;
 }
 
-termina(){
-	pop(stack, &context, sizeof(int), ;);
-	begin(context);
+void termina(){
+	pop(stack, &context, sizeof(int),null_delete);
+	BEGIN(context);
 }
