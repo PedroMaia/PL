@@ -1,8 +1,10 @@
 %{
-
-	char* out;
-
-
+	#include "lList.h"
+	
+	int context=TEXTO;
+	lList stack=NULL;
+	comeca(int new_context);
+	termina();
 %}
 
 
@@ -10,9 +12,16 @@
 
 %option outfile="ppp.c"
 
-%%
+%x LATEX HTML VERBATIM LISTA TABELA TEXTO
 
-\\latex
+%%
+	
+
+	begin(TEXTO)
+
+	
+
+<TEXTO,LISTA,TABELA>\\latex	
 
 \\endlatex
 
@@ -82,4 +91,13 @@ int main(int argc, char** argv){
 
 }
 
+comeca(int new_context){
+	push(stack, &context, sizeof(int));
+	begin(new_context);
+	context=new_context;
+}
 
+termina(){
+	pop(stack, &context, sizeof(int), ;);
+	begin(context);
+}
