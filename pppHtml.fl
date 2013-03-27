@@ -1,7 +1,17 @@
-%%
+%x LATEX HTML TEXTO
+
+%option noyywarp
+%option outfile="ppphtml.c"
 
 
 %%
+BEGIN TEXTO;
+
+<TEXTO,LISTA,TABELA>\\latex     {}
+
+<LATEX>.|\n     ECHO;
+
+<LATEX>\\endlatex       {}
 
 
 %%
