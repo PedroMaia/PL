@@ -1,0 +1,12 @@
+Meu nome e \it{Pedro Maia}.Estudo na universidade do minho e isto está a dar algum trabalho, mas nada demais.Lindo
+\bf{purum cá pum!!}
+\it{Pedro Maia Grande}
+La vou eu embora \it{Pedro Maia.}
+
+
+
+
+
+\bf{Os Miseráveis do mundo!!}
+=autor=[pedro Maia]
+
