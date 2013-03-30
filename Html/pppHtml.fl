@@ -1,12 +1,18 @@
-%x LATEX HTML TEXTO LISTA TABELA AUTOR
+%x LATEX HTML TEXTO LISTA TABELA TAG
 
 %{
         #include "lList.h"
 
         int context=0;
+	int lineON=0;
         lList stack=NULL;
         void comeca(int new_context);
         void termina();
+	char *ajusta_texto(int nr,char*text);
+	/*mais tarde para meter fora*/
+	void cabecalho();
+	void  rodape();
+	/* --  */
         char buf[1000];
 %}
 
@@ -17,27 +23,51 @@
 
 
 %%
-BEGIN TEXTO;
+
+        context=TEXTO;
+        BEGIN(TEXTO);
+
+  	cabecalho();
+
+<TEXTO>^\\it\{[^\}]*\}                 {printf("<p><i>%s</i>",ajusta_texto(5,yytext));lineON=1;}
+<TEXTO>\\it\{[^\}]*\}                  {printf("<i>%s</i>",ajusta_texto(5,yytext));}
+<TEXTO>^\\bf\{[^\}]*\}			{printf("<p><b>%s</b>\n",ajusta_texto(5,yytext));lineON=1;}  
+<TEXTO>\\bf\{[^\}]*\}                  {printf(" <b>%s</b> ",ajusta_texto(5,yytext));}
+
+<TEXTO>=autor=\[[^\}]*\]		{int len=strlen(yytext)-9;strncpy(buf,yytext+8,len); buf[len]='\0';printf("STR : %s",buf);}
+<TEXTO>^.				{printf("\n<p>%s",yytext);lineON=1;}
+<TEXTO>\n 				{if(lineON==1)printf("</p>\n"); lineON=0;}
+
+
 
 <TEXTO,LISTA,TABELA>\\latex     {comeca(LATEX);}
-
 <LATEX>.|\n     ECHO;
-
 <LATEX>\\endlatex       {termina();}
+
 
 
 <TEXTO,LISTA,TABELA>\\html	{comeca(HTML);}
 <HTML>.|\n	ECHO;
 <HTML>\\endhtml	  {termina();}
-
-
+<*><<EOF>>	{rodape();return 0;}
 %%
-int main(int argc, char** argv){
 
+int main(int argc, char** argv){
 
         yylex();
         return 0;
+}
 
+
+
+void cabecalho(){
+	printf("<!DOCTYPE html>\n<html>\n");
+	/*Para os acentos*/
+	printf("<meta charset='utf-8'>");
+}
+
+void rodape(){
+	printf("</html>");
 }
 
 void null_delete(void* e){
@@ -55,4 +85,13 @@ void termina(){
         BEGIN(context);
 }
 
+char* ajusta_texto(int nr,char*text){
 
+int len=strlen(text)-nr;
+char buf [1000];
+strncpy(buf,text+(nr-1),len);
+
+buf[len]='\0';
+
+return buf;
+}
