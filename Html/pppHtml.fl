@@ -9,11 +9,13 @@
         void comeca(int new_context);
         void termina();
 	char *ajusta_texto(int nr,char*text);
+	int tit_nr(char* text);
 	/*mais tarde para meter fora*/
 	void cabecalho();
 	void  rodape();
 	/* --  */
         char buf[1000];
+	FILE * fp;
 %}
 
 
@@ -28,13 +30,18 @@
         BEGIN(TEXTO);
 	cabecalho();
 
+
+<TEXTO>=indice=				{fp=fopen("index.html","w");}
+
+<TEXTO>=+[^"autor"].*			{if (fp!=NULL) fprintf(fp,"%s ",yytext);/*Caso contrário Erro*/}
+
 <TEXTO>^\\it\{[^\}]*\}			{printf("<p><i>%s</i>",ajusta_texto(5,yytext));lineON=1;}	
 <TEXTO>\\it\{[^\}]*\}                  {printf("<i>%s</i>",ajusta_texto(5,yytext));}
 
 <TEXTO>^\\bf\{[^\}]*\}                  {printf("<p><b>%s</b>",ajusta_texto(5,yytext));lineON=1;}
 <TEXTO>\\bf\{[^\}]*\}                  {printf("<b>%s</b>",ajusta_texto(5,yytext));}
 
-<TEXTO>=autor=\[[^\}]*\]		{int len=strlen(yytext)-9;strncpy(buf,yytext+8,len); buf[len]='\0';printf("STR : %s",buf);}
+<TEXTO>=autor=\[[^\]]*\]		{int len=strlen(yytext)-9;strncpy(buf,yytext+8,len); buf[len]='\0';printf("STR : %s",buf);}
 
 
 <TEXTO>^.                               {if(lineON==0){printf("<p>%s",yytext);lineON=1;}}
@@ -52,7 +59,7 @@
 <TEXTO,LISTA,TABELA>\\html	{comeca(HTML);}
 <HTML>.|\n	ECHO;
 <HTML>\\endhtml	  {termina();}
-<*><<EOF>>	{if(lineON==1)printf("</p>");rodape();return 0;}
+<*><<EOF>>	{if(lineON==1)printf("</p>");rodape(); fclose(fp);return 0;}
 %%
 
 int main(int argc, char** argv){
@@ -95,4 +102,10 @@ char buf [1000];
 strncpy(buf,text+(nr-1),len);
 buf[len]='\0';
 return buf;
+}
+
+int tit_nr(char* text){
+int len=strlen(text),i;
+for(i=0;i<len&&text[i]=='=';i++)
+return i;
 }
