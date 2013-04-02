@@ -26,17 +26,20 @@
 
         context=TEXTO;
         BEGIN(TEXTO);
+	cabecalho();
 
-  	cabecalho();
-
-<TEXTO>^\\it\{[^\}]*\}                 {printf("<p><i>%s</i>",ajusta_texto(5,yytext));lineON=1;}
+<TEXTO>^\\it\{[^\}]*\}			{printf("<p><i>%s</i>",ajusta_texto(5,yytext));lineON=1;}	
 <TEXTO>\\it\{[^\}]*\}                  {printf("<i>%s</i>",ajusta_texto(5,yytext));}
-<TEXTO>^\\bf\{[^\}]*\}			{printf("<p><b>%s</b>\n",ajusta_texto(5,yytext));lineON=1;}  
-<TEXTO>\\bf\{[^\}]*\}                  {printf(" <b>%s</b> ",ajusta_texto(5,yytext));}
+
+<TEXTO>^\\bf\{[^\}]*\}                  {printf("<p><b>%s</b>",ajusta_texto(5,yytext));lineON=1;}
+<TEXTO>\\bf\{[^\}]*\}                  {printf("<b>%s</b>",ajusta_texto(5,yytext));}
 
 <TEXTO>=autor=\[[^\}]*\]		{int len=strlen(yytext)-9;strncpy(buf,yytext+8,len); buf[len]='\0';printf("STR : %s",buf);}
-<TEXTO>^.				{printf("\n<p>%s",yytext);lineON=1;}
-<TEXTO>\n 				{if(lineON==1)printf("</p>\n"); lineON=0;}
+
+
+<TEXTO>^.                               {if(lineON==0){printf("<p>%s",yytext);lineON=1;}}
+<TEXTO>\n\n				 {if(lineON==1){printf("</p>"); lineON=0;}}
+
 
 
 
@@ -49,7 +52,7 @@
 <TEXTO,LISTA,TABELA>\\html	{comeca(HTML);}
 <HTML>.|\n	ECHO;
 <HTML>\\endhtml	  {termina();}
-<*><<EOF>>	{rodape();return 0;}
+<*><<EOF>>	{if(lineON==1)printf("</p>");rodape();return 0;}
 %%
 
 int main(int argc, char** argv){
@@ -90,8 +93,6 @@ char* ajusta_texto(int nr,char*text){
 int len=strlen(text)-nr;
 char buf [1000];
 strncpy(buf,text+(nr-1),len);
-
 buf[len]='\0';
-
 return buf;
 }
