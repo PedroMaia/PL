@@ -2,3 +2,7 @@
 pppLaTeX.c
 pppHtml.c
 *.out
+*.aux
+*.idx
+*.log
+*.toc

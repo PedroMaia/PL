@@ -25,5 +25,9 @@ lList.o: lList.c lList.h
 clean:
 	rm *.o
 	rm *.out
+	rm *.aux
+	rm *.idx
+	rm *.log
+	rm *.toc
 	rm pppHtml.c
 	rm pppLaTeX.c
