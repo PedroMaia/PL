@@ -39,10 +39,13 @@
 <TEXTO>\\image\{[^\}]*\}                {printf("<p><img src='%s'></p>\n",ajusta_texto(8,htmltext));}
 <TEXTO>=autor=\[[^\]]*\]                {int len=strlen(htmltext)-9;strncpy(buf,htmltext+8,len); buf[len]='\0';printf("STR : %s",buf);}
 
-<TEXTO>=indice=				{fp=fopen("index.html","w");}
+<TEXTO>=indice=				{fp=fopen("index.html","w");if(fp!=NULL) 
+					fprintf(fp,"<!DOCTYPE html>\n<html>\n");
+					fprintf(fp,"<meta charset='utf-8'>\n <head><a href='./doc.html'>Documento</a></head> <hr> <p><h2>Indice</h2></p>\n<hr>\n");
+					}
 
 <TEXTO>^=+.*				{if (fp!=NULL){ int eqs=tit_nr(htmltext);
-					fprintf(fp,"<a href='./doc.html#itag%d'>%s</a>",tag_tit,htmltext+eqs);
+					fprintf(fp,"<h3><a href='./doc.html#itag%d'>%s</a></h5>",tag_tit,htmltext+eqs);
 					printf("<a name='itag%d'> <h%d>%s</h%d> </a>\n",tag_tit,eqs,htmltext+eqs,eqs);
 					tag_tit++;
 					}/*Caso contrário Erro*/}
@@ -76,9 +79,9 @@
 <HTML>\\endhtml	  {termina();}
 
 <TEXTO>\\link\{[^\,]*			{printf("<a href='%s'>",htmltext+6);comeca(LINK);}
-<LINK>,[^\}]*\}				{printf(" %s</a>\n",ajusta_texto(2,htmltext));BEGIN(TEXTO);}
+<LINK>,[^\}]*\}				{printf(" %s</a>\n",ajusta_texto(2,htmltext));termina();}
 
-<*><<EOF>>	{if(lineON==1)printf("</p>");rodape(); fclose(fp);return 0;}
+<*><<EOF>>	{if(lineON==1)printf("</p>");rodape(); fprintf(fp," </html>");fclose(fp);return 0;}
 
 
 
@@ -120,9 +123,9 @@ int main(int argc, char** argv){
 
 
 void cabecalho(){
-	printf("<!DOCTYPE html>\n<html>\n");
+	printf("<!DOCTYPE html>\n<html>\n <a href='./index.html'>Indice</a> ");
 	/*Para os acentos*/
-	printf("<meta charset='utf-8\n'>");
+	printf("<meta charset='utf-8'>\n");
 }
 
 void rodape(){
@@ -134,13 +137,13 @@ void null_delete(void* e){
 }
 
 void comeca(int new_context){
-        push(stack, &context, sizeof(int));
+        stack=push(stack, &context, sizeof(int));
         BEGIN(new_context);
         context=new_context;
 }
 
 void termina(){
-        pop(stack, &context, sizeof(int),null_delete);
+        stack=pop(stack, &context, sizeof(int),null_delete);
         BEGIN(context);
 }
 
