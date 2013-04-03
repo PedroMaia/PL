@@ -1,0 +1,112 @@
+%x LATEX HTML TEXTO LISTA TABELA TAG
+
+%{
+        #include "lList.h"
+
+        int context=0;
+	int lineON=0;
+        lList stack=NULL;
+        void comeca(int new_context);
+        void termina();
+	char *ajusta_texto(int nr,char*text);
+	int tit_nr(char* text);
+	/*mais tarde para meter fora*/
+	void cabecalho();
+	void  rodape();
+	/* --  */
+        char buf[1000];
+	FILE * fp;
+%}
+
+
+%option noyywrap
+
+%option outfile="pppHtml.c"
+
+%option prefix="html"
+
+%%
+
+        context=TEXTO;
+        BEGIN(TEXTO);
+	cabecalho();
+
+
+<TEXTO>=indice=				{fp=fopen("index.html","w");}
+
+<TEXTO>=+[^"autor"].*			{if (fp!=NULL) fprintf(fp,"%s ",htmltext);/*Caso contrário Erro*/}
+
+<TEXTO>^\\it\{[^\}]*\}			{printf("<p><i>%s</i>",ajusta_texto(5,htmltext));lineON=1;}	
+<TEXTO>\\it\{[^\}]*\}                  {printf("<i>%s</i>",ajusta_texto(5,htmltext));}
+
+<TEXTO>^\\bf\{[^\}]*\}                  {printf("<p><b>%s</b>",ajusta_texto(5,htmltext));lineON=1;}
+<TEXTO>\\bf\{[^\}]*\}                  {printf("<b>%s</b>",ajusta_texto(5,htmltext));}
+
+<TEXTO>=autor=\[[^\]]*\]		{int len=strlen(htmltext)-9;strncpy(buf,htmltext+8,len); buf[len]='\0';printf("STR : %s",buf);}
+
+
+<TEXTO>^.                               {if(lineON==0){printf("<p>%s",htmltext);lineON=1;}}
+<TEXTO>\n\n				 {if(lineON==1){printf("</p>"); lineON=0;}}
+
+
+
+
+<TEXTO,LISTA,TABELA>\\latex     {comeca(LATEX);}
+<LATEX>.|\n     ECHO;
+<LATEX>\\endlatex       {termina();}
+
+
+
+<TEXTO,LISTA,TABELA>\\html	{comeca(HTML);}
+<HTML>.|\n	ECHO;
+<HTML>\\endhtml	  {termina();}
+<*><<EOF>>	{if(lineON==1)printf("</p>");rodape(); fclose(fp);return 0;}
+%%
+
+int main(int argc, char** argv){
+
+        htmllex();
+        return 0;
+}
+
+
+
+void cabecalho(){
+	printf("<!DOCTYPE html>\n<html>\n");
+	/*Para os acentos*/
+	printf("<meta charset='utf-8'>");
+}
+
+void rodape(){
+	printf("</html>");
+}
+
+void null_delete(void* e){
+        return;
+}
+
+void comeca(int new_context){
+        push(stack, &context, sizeof(int));
+        BEGIN(new_context);
+        context=new_context;
+}
+
+void termina(){
+        pop(stack, &context, sizeof(int),null_delete);
+        BEGIN(context);
+}
+
+char* ajusta_texto(int nr,char*text){
+
+int len=strlen(text)-nr;
+char buf [1000];
+strncpy(buf,text+(nr-1),len);
+buf[len]='\0';
+return buf;
+}
+
+int tit_nr(char* text){
+int len=strlen(text),i;
+for(i=0;i<len&&text[i]=='=';i++)
+return i;
+}

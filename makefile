@@ -1,7 +1,7 @@
-main:pppHtml pppLaTeX
+main:pppHtml.out pppLaTeX.out
 
-pppHtml:pppHtml.o lList.o
-	gcc pppHtml.o lList.o -o pppHtml -lfl
+pppHtml.out:pppHtml.o lList.o
+	gcc pppHtml.o lList.o -o pppHtml.out -lfl
 
 pppHtml.o:pppHtml.c
 	gcc pppHtml.c -c
@@ -9,8 +9,8 @@ pppHtml.o:pppHtml.c
 pppHtml.c:pppHtml.fl lList.h lList.c
 	flex pppHtml.fl
 
-pppLaTeX:pppLaTeX.o lList.o
-	gcc pppLaTeX.o lList.o -o pppLaTeX -lfl
+pppLaTeX.out:pppLaTeX.o lList.o
+	gcc pppLaTeX.o lList.o -o pppLaTeX.out -lfl
 
 pppLaTeX.o:pppLaTeX.c
 	gcc pppLaTeX.c -c
@@ -24,7 +24,6 @@ lList.o: lList.c lList.h
 
 clean:
 	rm *.o
+	rm *.out
 	rm pppHtml.c
 	rm pppLaTeX.c
-	rm pppHtml
-	rm pppLaTeX
