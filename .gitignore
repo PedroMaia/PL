@@ -2,3 +2,6 @@
 pppLaTeX.c
 pppHtml.c
 *.out
+*.html
+
+
