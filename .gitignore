@@ -1,3 +1,5 @@
 *.o
-ppp.c
-ppp
+pppLaTeX.c
+pppHtml.c
+pppLaTeX
+pppHtml
