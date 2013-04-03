@@ -8,6 +8,8 @@
 	void comeca(int new_context);
 	void termina();
 	char buf[1000];
+	
+	void printTitle(int level, char* title);
 %}
 
 
@@ -18,6 +20,7 @@
 
 
 %%
+	int i=0;
 	int len=0;
 	context=TEXTO;
 	BEGIN(TEXTO);
@@ -42,27 +45,27 @@
 
 
 
-<TEXTO>=titulo=\[[^\]]*\]	{len=strlen(yytext)-10; strncpy(buf,yytext+9,len);buf[len]='\0'; printf("\\title{%s}",buf);}
+<TEXTO>=titulo=\[[^\]]*\]	{len=strlen(yytext)-10; strncpy(buf,yytext+9,len);buf[len]='\0'; printf("\\title{%s}\n",buf);}
 
-=autor=\[[^\]]*\]
+<TEXTO>=autor=\[[^\]]*\]	{len=strlen(yytext)-9;strncpy(buf,yytext+8,len);buf[len]='\0'; printf("\\author{%s}\n",buf);}
 
-=indice=
+<TEXTO>=indice=			{printf("\\maketitle");printf("\\makeindex");}
 
-=+.*
+<TEXTO>^=+.*			{for(i=0;yytext[i]!='=';i++); printTitle(i,yytext+i);}
 
-\\bf\{[^\}]*\}
+<TEXTO>\\bf\{			{printf("\\textbf{");}
 
-\\it\{[^\}]*\}
+<TEXTO>\\it\{			{printf("\\textit{");}
 
-\\emph\{[^\}]*\}
+<TEXTO>\\emph\{			{ECHO;}
 
-\\noperp
+\\noperp			
 
 \\prep
 
-\\begin\{verbatim\\\}
+<TEXTO>\\begin\{verbatim\}	{ECHO; comeca(VERBATIM);}
 
-\\end\{verbatim\\\}
+<VERBATIM>\\end\{verbatim\}	{ECHO; termina();}
 
 :$
 
@@ -117,4 +120,9 @@ void comeca(int new_context){
 void termina(){
 	pop(stack, &context, sizeof(int),null_delete);
 	BEGIN(context);
+}
+
+void printTitle(int level, char* title){
+	char *sec[]={"section","subsection","subsubsection","paragrapf","subparagraph"};
+	printf("\\%s{%s}\n",sec[level],title);	
 }
