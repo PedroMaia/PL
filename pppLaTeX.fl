@@ -1,4 +1,4 @@
-%x LATEX HTML VERBATIM LISTA TABELA TEXTO
+%x LATEX HTML VERBATIM LISTAI LISTAD LISTAN TABELA TEXTO
 
 %{
 	#include "lList.h"
@@ -7,6 +7,8 @@
 	lList stack=NULL;
 	void comeca(int new_context);
 	void termina();
+	void cabecalhos();
+	void fim();
 	char buf[1000];
 	
 	void printTitle(int level, char* title);
@@ -23,11 +25,12 @@
 	int i=0;
 	int len=0;
 	context=TEXTO;
+	cabecalhos();
 	BEGIN(TEXTO);
 
 	
 
-<TEXTO,LISTA,TABELA>\\latex	{comeca(LATEX);}
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA>\\latex	{comeca(LATEX);}
 
 <LATEX>.|\n	ECHO;
 
@@ -36,7 +39,7 @@
 
 
 
-<TEXTO,LISTA,TABELA>\\html {comeca(HTML);}
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA>\\html {comeca(HTML);}
 
 <HTML>.|\n	{}
 
@@ -45,45 +48,56 @@
 
 
 
-<TEXTO>=titulo=\[[^\]]*\]	{len=strlen(textext)-10; strncpy(buf,textext+9,len);buf[len]='\0'; printf("\\title{%s}\n",buf);}
+<TEXTO>=titulo=\[[^\]]*\]			{len=strlen(textext)-10; strncpy(buf,textext+9,len);buf[len]='\0'; printf("\\title{%s}\n",buf);}
 
-<TEXTO>=autor=\[[^\]]*\]	{len=strlen(textext)-9;strncpy(buf,textext+8,len);buf[len]='\0'; printf("\\author{%s}\n",buf);}
+<TEXTO>=autor=\[[^\]]*\]			{len=strlen(textext)-9;strncpy(buf,textext+8,len);buf[len]='\0'; printf("\\author{%s}\n",buf);}
 
-<TEXTO>=indice=			{printf("\\maketitle");printf("\\makeindex");}
+<TEXTO>=indice=					{printf("\\maketitle\n");printf("\\tableofcontents\n");}
 
-<TEXTO>^=+.*			{for(i=0;textext[i]!='=';i++); printTitle(i,textext+i);}
+<TEXTO>^=+.*					{for(i=0;textext[i]=='=';i++); printTitle(i,textext+i);}
 
-<TEXTO>\\bf\{			{printf("\\textbf{");}
+<TEXTO>\\bf\{					{printf("\\textbf{");}
 
-<TEXTO>\\it\{			{printf("\\textit{");}
+<TEXTO>\\it\{					{printf("\\textit{");}
 
-<TEXTO>\\emph\{			{ECHO;}
+<TEXTO>\\emph\{					{ECHO;}
 
-\\noperp			
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA>\\begin\{verbatim\}		{ECHO; comeca(VERBATIM);}
 
-\\prep
+<VERBATIM>.|\n					ECHO;
 
-<TEXTO>\\begin\{verbatim\}	{ECHO; comeca(VERBATIM);}
+<VERBATIM>\\end\{verbatim\}			{ECHO; termina();}
 
-<VERBATIM>\\end\{verbatim\}	{ECHO; termina();}
+<TEXTO,LISTAI,LISTAD,LISTAN>:i$		{comeca(LISTAI); printf("\\begin{itemize}\n");}
 
-:$
+<TEXTO,LISTAI,LISTAD,LISTAN>:d$		{comeca(LISTAD); printf("\\begin{description}\n");}
 
-^\s*\.[^0-9\[].*
+<TEXTO,LISTAI,LISTAD,LISTAN>:n$		{comeca(LISTAN);printf("\\begin{enumerate}\n");}
 
-^\s*\.[0-9].*
 
-^\s*\.\[[^\]]*\]
+<LISTAI,LISTAN>^\s*\..*			{for(i=0; textext[i]!='.';i++); printf("\\item %s\n",textext+i+1);}
 
-#
+<LISTAD>^\s*\.\[[^\]]*\].*			{for(i=0; textext[i]!='.';i++); printf("\\item%s\n",textext+i+1);}
 
-\\sic\{[^\}]*\}
+<LISTAI>#					{printf("\\end{itemize}"); termina();}
 
-\\link\{[^\}]*,[^\}]*\}
+<LISTAD>#					{printf("\\end{description}"); termina();}
 
-\\image\{[^\}]*\}
+<LISTAN>#					{printf("\\end{enumerate}"); termina();}
 
-\\linha
+\\sic\{[^\}]*\}					{printf("\\verb}%s",textext+5);}
+
+\\link\{[^\}]*,[^\}]*\}		{for(i=0;textext[i+5]!=',';i++) 
+				buf[i]=textext[i+5]; 
+				buf[i]='}';buf[i+1]='{'; buf[i+2]='\0';
+				printf("\\herf%s%s",buf,textext+6+i);}
+
+\\image\{[^\}]*\}		{printf("\\begin{figure}[h]\n");
+				printf("\\includegraphics%s\n",textext+6);
+				printf("\\end{figure}\n");}
+						
+
+\\linha			printf("\\hline\n");
 
 \\table
 
@@ -96,6 +110,8 @@
 &(l|c|r)&[^#&]*
 
 \\endtable
+
+<<EOF>>		{fim();return 0;}
 
 %%
 
@@ -124,5 +140,18 @@ void termina(){
 
 void printTitle(int level, char* title){
 	char *sec[]={"section","subsection","subsubsection","paragrapf","subparagraph"};
-	printf("\\%s{%s}\n",sec[level],title);	
+	printf("\\%s{%s}\n",sec[level-1],title);	
+}
+
+void cabecalhos(){
+	
+	printf("\\documentclass[pdftex,12pt,a4paper]{report}\n");
+	printf("\\usepackage[portuguese]{babel}\n");
+	printf("\\usepackage[pdftex]{graphicx}\n");
+	printf("\\usepackage{hyperref}\n");
+	printf("\\begin{document}\n");
+}
+
+void fim(){
+	printf("\\end{document}\n");
 }

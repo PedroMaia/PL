@@ -2,6 +2,13 @@
 pppLaTeX.c
 pppHtml.c
 *.out
+<<<<<<< HEAD
 *.html
 
 
+=======
+*.aux
+*.idx
+*.log
+*.toc
+>>>>>>> 7459efbb1beb6a9b8a9dfdf5a70bbbbdc8e3f410
