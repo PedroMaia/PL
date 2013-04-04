@@ -1,4 +1,4 @@
-%x LATEX HTML VERBATIM LISTAI LISTAD LISTAN TABELA TEXTO
+%x LATEX HTML VERBATIM LISTAI LISTAD LISTAN TABELA TABELAN TEXTO
 
 %{
 	#include "lList.h"
@@ -24,13 +24,14 @@
 %%
 	int i=0;
 	int len=0;
+	char* c=NULL;
 	context=TEXTO;
 	cabecalhos();
 	BEGIN(TEXTO);
 
 	
 
-<TEXTO,LISTAI,LISTAD,LISTAN,TABELA>\\latex	{comeca(LATEX);}
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA,TABELAN>\\latex	{comeca(LATEX);}
 
 <LATEX>\\endlatex	{termina();}
 
@@ -54,13 +55,13 @@
 
 <TEXTO>^=+.*					{for(i=0;textext[i]=='=';i++); printTitle(i,textext+i);}
 
-<TEXTO,LISTAI,LISTAD,LISTAN>\\bf\{					{printf("\\textbf{");}
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA,TABELAN>\\bf\{	{printf("\\textbf{");}
 
-<TEXTO,LISTAI,LISTAD,LISTAN>\\it\{					{printf("\\textit{");}
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA,TABELAN>\\it\{			{printf("\\textit{");}
 
-<TEXTO,LISTAI,LISTAD,LISTAN>\\emph\{					{ECHO;}
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA,TABELAN>\\emph\{			{ECHO;}
 
-<TEXTO,LISTAI,LISTAD,LISTAN,TABELA>\\begin\{verbatim\}		{ECHO; comeca(VERBATIM);}
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA,TABELAN>\\begin\{verbatim\}		{ECHO; comeca(VERBATIM);}
 
 
 <VERBATIM>\\end\{verbatim\}			{ECHO; termina();}
@@ -85,9 +86,9 @@
 
 <LISTAN>#					{printf("\\end{enumerate}"); termina();}
 
-<TEXTO,LISTAI,LISTAD,LISTAN>\\sic\{[^\}]*\}			{printf("\\verb}%s",textext+5);}
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA,TABELAN>\\sic\{[^\}]*\}			{printf("\\verb}%s",textext+5);}
 
-<TEXTO,LISTAI,LISTAD,LISTAN>\\link\{[^\},]*,[^\}]*\}		{char* s1=strtok(textext+5,",");
+<TEXTO,LISTAI,LISTAD,LISTAN,TABELA,TABELAN>\\link\{[^\},]*,[^\}]*\}		{char* s1=strtok(textext+5,",");
 								char* s2=strtok(NULL,",");
 								printf("\\href%s}{%s",s1,s2);}
 
@@ -98,15 +99,29 @@
 
 <TEXTO>\\linha			printf("\\line(1,0){450}\n");
 
-\\table\[(l|c|r)*\]
+<TEXTO>\\table\[(l|c|r)*\]	{comeca(TABELA);
+				printf("\\begin{table}[h]\n");
+				printf("\\begin{tabular}{|");
+				c=textext+7;
+				for(i=0;c[i]!=']';i++) printf("%c|",c[i]);
+				printf("}\n");
+				printf("\\hline\n");}
 
-\\tablen\[(l|c|r)*\]
+<TEXTO>\\tablen\[(l|c|r)*\]	{comeca(TABELAN);
+				printf("\\begin{table}[h]\n");
+				printf("\\begin{tabular}{");
+				c=textext+8;
+				for(i=0;c[i]!=']';i++) printf("%c",c[i]);
+				printf("}\n");}
 
-&
+<TABELA,TABELAN>&		{ECHO;}
 
-\\\\
+<TABELA>\\\\			{ECHO; printf("\n\\hline\n");}
 
-\\endtable
+<TABELAN>\\\\			{ECHO;}
+
+<TABELA,TABELAN>\\endtable	{printf("\\end{tabular}\n");
+				printf("\\end{table}\n");}
 
 <<EOF>>		{fim();return 0;}
 

@@ -16,3 +16,13 @@ isto e texto nao formatado!!!!
 ==isto é um subtitulo
 
 \image{./teste.jpg}
+
+\table[cc]
+
+\it{ola} & \bf{parvo} \\
+
+\it{\bf{isto é}} & uma tabela \\
+
+\endtable
+
+
