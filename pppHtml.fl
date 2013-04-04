@@ -1,4 +1,4 @@
-%x LATEX HTML TEXTO LISTA TABELA VERBATIM LINK
+%x LATEX HTML TEXTO LISTA LISTAN LISTAD TABELA VERBATIM LINK
 
 %{
         #include "lList.h"
@@ -41,14 +41,12 @@
 
 <TEXTO>=indice=				{fp=fopen("index.html","w");if(fp!=NULL) 
 					fprintf(fp,"<!DOCTYPE html>\n<html>\n");
-					fprintf(fp,"<meta charset='utf-8'>\n <head><a href='./doc.html'>Documento</a></head> <hr> <p><h2>Indice</h2></p>\n<hr>\n");
-					}
+					fprintf(fp,"<meta charset='utf-8'>\n <head><a href='./doc.html'>Documento</a></head> <hr> <p><h2>Indice</h2></p>\n<hr>\n");}
 
 <TEXTO>^=+.*				{if (fp!=NULL){ int eqs=tit_nr(htmltext);
 					fprintf(fp,"<h3><a href='./doc.html#itag%d'>%s</a></h5>",tag_tit,htmltext+eqs);
 					printf("<a name='itag%d'> <h%d>%s</h%d> </a>\n",tag_tit,eqs,htmltext+eqs,eqs);
-					tag_tit++;
-					}/*Caso contrário Erro*/}
+					tag_tit++;}/*Caso contrário Erro*/}
 
 
 <TEXTO>^\\it\{[^\}]*\}			{printf("<p><i>%s</i>",ajusta_texto(5,htmltext));lineON=1;}	
@@ -60,29 +58,54 @@
 <TEXTO>\\linha				{printf("<hr>\n");}
 
 <TEXTO>^.                               {if(lineON==0){printf("<p>%s",htmltext);lineON=1;}}
-<TEXTO>\n\n				 {if(lineON==1){printf("</p>"); lineON=0;}}
-
-
-<TEXTO>\\begin\{verbatim\}      {ECHO; comeca(VERBATIM);}
-
-<VERBATIM>\\end\{verbatim\}     {ECHO; termina();}
-
-
-<TEXTO,LISTA,TABELA>\\latex     {comeca(LATEX);}
-<LATEX>.|\n     ECHO;
-<LATEX>\\endlatex       {termina();}
+<TEXTO>\n\n				{if(lineON==1){printf("</p>"); lineON=0;}}
 
 
 
-<TEXTO,LISTA,TABELA>\\html	{comeca(HTML);}
-<HTML>.|\n	ECHO;
-<HTML>\\endhtml	  {termina();}
+
+<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\begin\{verbatim\}		{comeca(VERBATIM);}
+<VERBATIM>.|\n								ECHO;
+<VERBATIM>\\end\{verbatim\}						{termina();}
+
+
+<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\latex     			{comeca(LATEX);}
+<LATEX>.|\n     							ECHO;
+<LATEX>\\endlatex       						{termina();}
+
+
+
+<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\html				{comeca(HTML);}
+<HTML>.|\n								ECHO;
+<HTML>\\endhtml	  							{termina();}
+
+
 
 <TEXTO>\\link\{[^\,]*			{printf("<a href='%s'>",htmltext+6);comeca(LINK);}
 <LINK>,[^\}]*\}				{printf(" %s</a>\n",ajusta_texto(2,htmltext));termina();}
 
-<*><<EOF>>	{if(lineON==1)printf("</p>");rodape(); fprintf(fp," </html>");fclose(fp);return 0;}
 
+
+<TEXTO,LISTA,LISTAN,LISTAD,LINK>:n$	{printf("<ol>\n");comeca(LISTA);}
+<LISTA>^\..*				{printf("<li>%s</li>\n",htmltext+1);}
+<LISTA>#$				{printf("</ol>\n");termina();}
+
+
+<TEXTO,LISTA,LISTAN,LISTAD,LINK>:i$	{printf("<ul>\n");comeca(LISTAN);}
+<LISTAN>^\..*                           {printf("<li>%s</li>\n",htmltext+1);}
+<LISTAN>#$                              {printf("</ul>\n");termina();}
+
+<TEXTO,LISTA,LISTAN,LISTAD,LINK>:d$     {printf("<dl>\n");comeca(LISTAD);}
+<LISTAD>^\.\[[^\]]*\].*                 {char* s1=strtok(htmltext+2,"]");
+                                        char* s2=strtok(NULL,"]");
+                                        printf("<dt>%s</dt>\n",s1);
+					printf("<dd>-%s</dd>\n",s2);}
+<LISTAD>#$                              {printf("</dl>\n");termina();}
+
+
+
+
+				
+<*><<EOF>>	{if(lineON==1)printf("</p>");rodape(); fprintf(fp," </html>");fclose(fp);return 0;}
 
 
 :$
@@ -97,13 +120,10 @@
 
 \\sic\{[^\}]*\}
 
-\\link\{[^\}]*,[^\}]*\}
-
 
 \\table
 
 \\tablen
-
 ##
 
 #(l|c|r)#[^#&]*

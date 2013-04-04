@@ -1,7 +1,7 @@
 =titulo=[Ficheiro de Testes para ppp]
 =indice=
 \link{http://www.feedly.com,pumpum}
-=======
+
 =autor=[pedro Maia]
 
 =indice=
@@ -13,6 +13,18 @@ A deflagração da Revolução \bf{liberal de 1820 no Porto}, com a \it{rápida 
 
 Teve de lidar com as ameaças de revolucionários e com a insubordinação de tropas portuguesas, as quais foram, no entanto, todas subjugadas. A tentativa do governo português de retirar a autonomia política que o Brasil gozava desde 1808 foi recebida com descontentamento geral. Pedro I escolheu o lado brasileiro e declarou a independência do Brasil de Portugal em 7 de setembro de 1822. Em 12 de outubro foi aclamado imperador brasileiro e, em março de 1824, já havia derrotado todos os exércitos leais a Portugal. Poucos meses depois, Pedro I esmagou a Confederação do Equador, principal reação contra a tendência absolutista e a \bf{política centralizadora de seu governo}.
 \image{teste.jpg}
+
+:n
+.Pedro
+.Maia
+#
+
+:d
+.[Lala]parara
+.[LiLi]piriri
+#
+
+
 \it{Os Miseráveis do mundo!!}
 
 
