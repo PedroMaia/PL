@@ -27,4 +27,7 @@ Teve de lidar com as ameaças de revolucionários e com a insubordinação de tr
 
 \it{Os Miseráveis do mundo!!}
 
-
+\table[cccc]
+&pedro&maia&vamos\\
+&epum&pumba&lala\\
+\endtable

@@ -86,51 +86,35 @@
 
 
 <TEXTO,LISTA,LISTAN,LISTAD,LINK>:n$	{printf("<ol>\n");comeca(LISTA);}
-<LISTA>^\..*				{printf("<li>%s</li>\n",htmltext+1);}
+<LISTA>^\s*\..*				{printf("<li>%s</li>\n",htmltext+1);}
 <LISTA>#$				{printf("</ol>\n");termina();}
 
 
 <TEXTO,LISTA,LISTAN,LISTAD,LINK>:i$	{printf("<ul>\n");comeca(LISTAN);}
-<LISTAN>^\..*                           {printf("<li>%s</li>\n",htmltext+1);}
+<LISTAN>^\s*\..*                           {printf("<li>%s</li>\n",htmltext+1);}
 <LISTAN>#$                              {printf("</ul>\n");termina();}
 
 <TEXTO,LISTA,LISTAN,LISTAD,LINK>:d$     {printf("<dl>\n");comeca(LISTAD);}
-<LISTAD>^\.\[[^\]]*\].*                 {char* s1=strtok(htmltext+2,"]");
+<LISTAD>^\s*\.\[[^\]]*\].*              {char* s1=strtok(htmltext+2,"]");
                                         char* s2=strtok(NULL,"]");
                                         printf("<dt>%s</dt>\n",s1);
 					printf("<dd>-%s</dd>\n",s2);}
 <LISTAD>#$                              {printf("</dl>\n");termina();}
 
 
+<TEXTO,LISTA,LISTAN,LISTAD,LINK>\\(tablen|table)\[(l|c|r)*\]    	{int lag=1;
+									 if(htmltext[7]=='n') lag=0;
+									 printf("<table border='%d'>",lag);
+									 comeca(TABELA);}
+<TABELA>^\&[^&]*							{printf("<tr><td>%s",htmltext+1);}
+<TABELA>\&[^(\&|\\)]*							{printf("</td><td>%s",htmltext+1);}
+<TABELA>\\\\								{printf("</td>\n</tr>");}
+<TABELA>\\endtable							{printf("</table>");termina();}	
 
 
 				
 <*><<EOF>>	{if(lineON==1)printf("</p>");rodape(); fprintf(fp," </html>");fclose(fp);return 0;}
 
-
-:$
-
-^\s*\.[^0-9\[].*
-
-^\s*\.[0-9].*
-
-^\s*\.\[[^\]]*\]
-
-#
-
-\\sic\{[^\}]*\}
-
-
-\\table
-
-\\tablen
-##
-
-#(l|c|r)#[^#&]*
-
-&(l|c|r)&[^#&]*
-
-\\endtable
 
 %%
 
