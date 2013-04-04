@@ -32,8 +32,6 @@
 
 <TEXTO,LISTAI,LISTAD,LISTAN,TABELA>\\latex	{comeca(LATEX);}
 
-<LATEX>.|\n	ECHO;
-
 <LATEX>\\endlatex	{termina();}
 
 
@@ -56,15 +54,14 @@
 
 <TEXTO>^=+.*					{for(i=0;textext[i]=='=';i++); printTitle(i,textext+i);}
 
-<TEXTO>\\bf\{					{printf("\\textbf{");}
+<TEXTO,LISTAI,LISTAD,LISTAN>\\bf\{					{printf("\\textbf{");}
 
-<TEXTO>\\it\{					{printf("\\textit{");}
+<TEXTO,LISTAI,LISTAD,LISTAN>\\it\{					{printf("\\textit{");}
 
-<TEXTO>\\emph\{					{ECHO;}
+<TEXTO,LISTAI,LISTAD,LISTAN>\\emph\{					{ECHO;}
 
 <TEXTO,LISTAI,LISTAD,LISTAN,TABELA>\\begin\{verbatim\}		{ECHO; comeca(VERBATIM);}
 
-<VERBATIM>.|\n					ECHO;
 
 <VERBATIM>\\end\{verbatim\}			{ECHO; termina();}
 
@@ -75,9 +72,12 @@
 <TEXTO,LISTAI,LISTAD,LISTAN>:n$		{comeca(LISTAN);printf("\\begin{enumerate}\n");}
 
 
-<LISTAI,LISTAN>^\s*\..*			{for(i=0; textext[i]!='.';i++); printf("\\item %s\n",textext+i+1);}
+<LISTAI,LISTAN>^\s*\.		{printf("\\item ");}
 
-<LISTAD>^\s*\.\[[^\]]*\].*			{for(i=0; textext[i]!='.';i++); printf("\\item%s\n",textext+i+1);}
+<LISTAD>^\s*\.\[[^\]]*\]	{for(i=0; textext[i]!='.';i++);
+				for(len=0;textext[i+len+1]!=']';len++);
+				strncpy(buf,textext+i+1,len); buf[len]='\0';
+				printf("\\item%s",buf);}
 
 <LISTAI>#					{printf("\\end{itemize}"); termina();}
 
@@ -85,22 +85,21 @@
 
 <LISTAN>#					{printf("\\end{enumerate}"); termina();}
 
-\\sic\{[^\}]*\}					{printf("\\verb}%s",textext+5);}
+<TEXTO,LISTAI,LISTAD,LISTAN>\\sic\{[^\}]*\}			{printf("\\verb}%s",textext+5);}
 
-\\link\{[^\}]*,[^\}]*\}		{for(i=0;textext[i+5]!=',';i++) 
-				buf[i]=textext[i+5]; 
-				buf[i]='}';buf[i+1]='{'; buf[i+2]='\0';
-				printf("\\herf%s%s",buf,textext+6+i);}
+<TEXTO,LISTAI,LISTAD,LISTAN>\\link\{[^\},]*,[^\}]*\}		{char* s1=strtok(textext+5,",");
+								char* s2=strtok(NULL,",");
+								printf("\\href%s}{%s",s1,s2);}
 
-\\image\{[^\}]*\}		{printf("\\begin{figure}[h]\n");
+<TEXTO>\\image\{[^\}]*\}	{printf("\\begin{figure}[h]\n");
 				printf("\\includegraphics%s\n",textext+6);
 				printf("\\end{figure}\n");}
 						
 
-\\linha			printf("\\hline\n");
+<TEXTO>\\linha			printf("\\line(1,0){450}\n");
 
 \\table
-
+to
 \\tablen
 
 ##
@@ -128,18 +127,18 @@ void null_delete(void* e){
 }
 
 void comeca(int new_context){
-	push(stack, &context, sizeof(int));
+	stack=push(stack, &context, sizeof(int));
 	BEGIN(new_context);
 	context=new_context;
 }
 
 void termina(){
-	pop(stack, &context, sizeof(int),null_delete);
+	stack=pop(stack, &context, sizeof(int),null_delete);
 	BEGIN(context);
 }
 
 void printTitle(int level, char* title){
-	char *sec[]={"section","subsection","subsubsection","paragrapf","subparagraph"};
+	char *sec[]={"chapter","section","subsection","subsubsection","paragrapf","subparagraph"};
 	printf("\\%s{%s}\n",sec[level-1],title);	
 }
 
@@ -147,6 +146,7 @@ void cabecalhos(){
 	
 	printf("\\documentclass[pdftex,12pt,a4paper]{report}\n");
 	printf("\\usepackage[portuguese]{babel}\n");
+	printf("\\usepackage[utf8]{inputenc}\n");
 	printf("\\usepackage[pdftex]{graphicx}\n");
 	printf("\\usepackage{hyperref}\n");
 	printf("\\begin{document}\n");

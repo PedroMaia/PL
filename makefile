@@ -23,11 +23,11 @@ lList.o: lList.c lList.h
 	gcc lList.c -c	
 
 clean:
-	rm *.o
-	rm *.out
-	rm *.aux
-	rm *.idx
-	rm *.log
-	rm *.toc
-	rm pppHtml.c
-	rm pppLaTeX.c
+	-rm *.o
+	-rm *.out
+	-rm *.aux
+	-rm *.log
+	-rm *.toc
+	-rm *.tex
+	-rm pppHtml.c
+	-rm pppLaTeX.c

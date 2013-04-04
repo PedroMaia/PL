@@ -1,0 +1,18 @@
+=autor=[César Perdigão]
+=titulo=[Isto é um teste!]
+
+=indice=
+
+=Introducao
+
+Isto é so para começar aqui a fazer umas cenas meias maradas ok???
+
+\begin{verbatim}
+
+isto e texto nao formatado!!!!
+
+\end{verbatim}
+
+==isto é um subtitulo
+
+\image{./teste.jpg}
