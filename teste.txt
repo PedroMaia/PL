@@ -1,15 +1,13 @@
-<<<<<<< HEAD
 =titulo=[Ficheiro de Testes para ppp]
 =indice=
-\link{http://www.feedly.com,pumpum}	
-==Pedro maia
+\link{http://www.feedly.com,pumpum}
 =======
 =autor=[pedro Maia]
 
 =indice=
 
 =Pedro maia
->>>>>>> 7459efbb1beb6a9b8a9dfdf5a70bbbbdc8e3f410
+
 
 A deflagração da Revolução \bf{liberal de 1820 no Porto}, com a \it{rápida adesão de Lisboa} e o resto do país, obrigou o pai de Pedro I a retornar a Portugal em abril de 1821, deixando-o para governar o Brasil como regente.
 
