@@ -121,7 +121,7 @@
 <TABELAN>\\\\			{ECHO;}
 
 <TABELA,TABELAN>\\endtable	{printf("\\end{tabular}\n");
-				printf("\\end{table}\n");}
+				printf("\\end{table}\n");termina();}
 
 <<EOF>>		{fim();return 0;}
 

@@ -59,7 +59,7 @@
 
 <TEXTO>\\linha								{printf("<hr>\n");}
 
-<TEXTO>^.                               				{if(lineON==0){printf("<p>%s",htmltext);lineON=1;}}
+<TEXTO,LISTA,LISTAD,LISTAN,LINK>^.                               				{if(lineON==0){printf("<p>%s",htmltext);lineON=1;}}
 <TEXTO>\n\n								{if(lineON==1){printf("</p>"); lineON=0;}}
 
 
@@ -105,13 +105,14 @@
 
 
 
-<TEXTO,LISTA,LISTAN,LISTAD,LINK>\\(tablen|table)\[(l|c|r)*\]    	{int lag=1;
+<TEXTO,LISTA,LISTAN,LISTAD,LINK>\\(tablen|table)\[.*]    	{int lag=1;
 									 if(htmltext[7]=='n') lag=0;
 									 printf("<table border='%d'>",lag);
 									 comeca(TABELA);}
-<TABELA>^\&[^&]*							{printf("<tr><td>%s",htmltext+1);}
-<TABELA>\&[^(\&|\\)]*							{printf("</td><td>%s",htmltext+1);}
-<TABELA>\\\\								{printf("</td>\n</tr>");}
+
+<TABELA>^[^(\&|\\]*							{printf("<tr><td>%s",htmltext); } 
+<TABELA>\&[^(\&|\\)]*							{printf("</td><td>%s",htmltext+1);}				
+<TABELA>\\\\								{printf("</td></tr>");}
 <TABELA>\\endtable							{printf("</table>");termina();}	
 
 <TEXTO,LISTA,LISTAD,LISTAN>\\sic\{[^\}]*\}			{printf("<pre> %s </pre>",ajusta_texto(6,htmltext));}
