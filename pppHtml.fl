@@ -37,7 +37,7 @@
 <TEXTO>=titulo=\[[^\]]*\]		{printf("<h1>%s</h1>\n<hr>\n",ajusta_texto(10,htmltext));}
 
 <TEXTO>\\image\{[^\}]*\}                {printf("<p><img src='%s'></p>\n",ajusta_texto(8,htmltext));}
-<TEXTO>=autor=\[[^\]]*\]                {int len=strlen(htmltext)-9;strncpy(buf,htmltext+8,len); buf[len]='\0';printf("STR : %s",buf);}
+<TEXTO>=autor=\[[^\]]*\]                {printf("<address>%s</address>",ajusta_texto(9,htmltext));}
 
 <TEXTO>=indice=				{fp=fopen("index.html","w");if(fp!=NULL) 
 					fprintf(fp,"<!DOCTYPE html>\n<html>\n");
