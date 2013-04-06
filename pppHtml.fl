@@ -71,7 +71,7 @@
 
 
 <TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\latex     			{comeca(LATEX);}
-<LATEX>.|\n     							ECHO;
+<LATEX>.|\n     							{}
 <LATEX>\\endlatex       						{termina();}
 
 
