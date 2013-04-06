@@ -1,24 +1,13 @@
-\documentclass{report}
-\usepackage[utf8]{inputenc}
-\usepackage[portuguese]{babel}
-\usepackage[latin1]{inputenc}
 
-\title{Trabalho 1: Pré-processador para LaTeX ou HTML}
-\author{a61007 César Perdigão \\ a61009 Luís Caseiro \\ a61078 Pedro Maia}
-\date{Abril 2013}
+=title[Trabalho 1: Pré-processador para LaTeX ou HTML]
+=author[a61007 César Perdigão,a61009 Luís Caseiro,a61078 Pedro Maia]
+\bf{Abril 2013}
 
-\setcounter{secnumdepth}{5}
-\usepackage{verbatim}
-\usepackage{indentfirst}
-\usepackage{natbib}
-\usepackage{graphicx}
 
-\begin{document}
+=indice=
 
-\maketitle
-\tableofcontents
-\chapter{Introdução}
-
+==Introdução
+\linha
 
 Após a saída do enunciado em que nos foi disponibilizado vários
 projetos o grupo decidiu realizar um pré-processador para LaTeX ou HTML, porque é um tema interessante e que pode vir a ajudar em muitos projetos que surgerão posteriormente, pois as competencias obtidas após a realização deste irão tornar um pouco mais facil e rápido o desenvolvimento de outros projetos em latex e html.
@@ -30,17 +19,18 @@ Após esta primeira fase o grupo começou por definir os comandos latex e html que
 A partir o grupo utilizou expressões regulares com o programa \textbf{flex} de maneira a realizar o que foi pedido por exemplo sempre que no inicio da linha apareça o simbolo = sabe-se que expressão a seguir se trata do titulo de uma secção.
 
 
-\chapter{LaTeX}
-\section{Comandos}
-\subsection{Cabeçalho}
+==LaTeX
+===Comandos
+===Cabeçalho
+
 Para o cabeçalho especificamos os seguintes comandos:
 \begin{itemize}
 \item Título
 \begin{verbatim} =titulo=[titulodocumento] \end{verbatim} 
 Em que \textbf{=titulo=} substitui \verb{\title.
-\item Autor
-\begin{verbatim} =autor=[nomeAutor] \end{verbatim} 
-Em que \textbf{=autor=} substitui \verb{\author.
+
+
+
 \item Índice
 \begin{verbatim} =indice= \end{verbatim} 
 Em que \textbf{=indice=} substitui \verb{\tableofcontents.

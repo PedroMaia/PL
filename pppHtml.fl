@@ -51,23 +51,23 @@
 					tag_tit++;}/*Caso contrário Erro*/}
 
 
-<TEXTO>^\\it\{[^\}]*\}			{printf("<p><i>%s</i>",ajusta_texto(5,htmltext));lineON=1;}	
-<TEXTO>\\it\{[^\}]*\}                   {printf("<i>%s</i>",ajusta_texto(5,htmltext));}
+<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>^\\it\{[^\}]*\}			{printf("<p><i>%s</i>",ajusta_texto(5,htmltext));lineON=1;}	
+<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\it\{[^\}]*\}                   {printf("<i>%s</i>",ajusta_texto(5,htmltext));}
 
-<TEXTO>^\\bf\{[^\}]*\}                  {printf("<p><b>%s</b>",ajusta_texto(5,htmltext));lineON=1;}
-<TEXTO>\\bf\{[^\}]*\}                   {printf("<b>%s</b>",ajusta_texto(5,htmltext));}
+<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>^\\bf\{[^\}]*\}                  {printf("<p><b>%s</b>",ajusta_texto(5,htmltext));lineON=1;}
+<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\bf\{[^\}]*\}                   {printf("<b>%s</b>",ajusta_texto(5,htmltext));}
 
-<TEXTO>\\linha				{printf("<hr>\n");}
+<TEXTO>\\linha								{printf("<hr>\n");}
 
-<TEXTO>^.                               {if(lineON==0){printf("<p>%s",htmltext);lineON=1;}}
-<TEXTO>\n\n				{if(lineON==1){printf("</p>"); lineON=0;}}
-
-
+<TEXTO>^.                               				{if(lineON==0){printf("<p>%s",htmltext);lineON=1;}}
+<TEXTO>\n\n								{if(lineON==1){printf("</p>"); lineON=0;}}
 
 
-<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\begin\{verbatim\}		{comeca(VERBATIM);}
+
+
+<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\begin\{verbatim\}		{printf("<pre>");comeca(VERBATIM);}
 <VERBATIM>.|\n								ECHO;
-<VERBATIM>\\end\{verbatim\}						{termina();}
+<VERBATIM>\\end\{verbatim\}						{printf("</pre>");termina();}
 
 
 <TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\latex     			{comeca(LATEX);}
@@ -76,9 +76,9 @@
 
 
 
-<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\html				{comeca(HTML);}
+<TEXTO,LISTA,LISTAD,LISTAN,TABELA,LINK>\\html				{printf("<pre>");comeca(HTML);}
 <HTML>.|\n								ECHO;
-<HTML>\\endhtml	  							{termina();}
+<HTML>\\endhtml	  							{printf("</pre>");termina();}
 
 
 
@@ -104,6 +104,7 @@
 <LISTAD>#$                              {printf("</dl>\n");termina();}
 
 
+
 <TEXTO,LISTA,LISTAN,LISTAD,LINK>\\(tablen|table)\[(l|c|r)*\]    	{int lag=1;
 									 if(htmltext[7]=='n') lag=0;
 									 printf("<table border='%d'>",lag);
@@ -113,7 +114,7 @@
 <TABELA>\\\\								{printf("</td>\n</tr>");}
 <TABELA>\\endtable							{printf("</table>");termina();}	
 
-
+<TEXTO,LISTA,LISTAD,LISTAN>\\sic\{[^\}]*\}			{printf("<pre> %s </pre>",ajusta_texto(6,htmltext));}
 				
 <*><<EOF>>	{if(lineON==1)printf("</p>");rodape(); fprintf(fp," </html>");fclose(fp);return 0;}
 
@@ -160,7 +161,6 @@ void termina(){
 char* ajusta_texto(int nr,char*text){
 
 int len=strlen(text)-nr;
-char buf [1000];
 strncpy(buf,text+(nr-1),len);
 buf[len]='\0';
 return buf;
