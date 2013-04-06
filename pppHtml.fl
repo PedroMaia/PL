@@ -16,6 +16,7 @@
 	/* --  */
         char buf[1000];
 	int tag_tit=0;
+	char filename[100];
 	FILE * fp;
 %}
 
@@ -39,12 +40,13 @@
 <TEXTO>\\image\{[^\}]*\}                {printf("<p><img src='%s'></p>\n",ajusta_texto(8,htmltext));}
 <TEXTO>=autor=\[[^\]]*\]                {printf("<address>%s</address>",ajusta_texto(9,htmltext));}
 
-<TEXTO>=indice=				{fp=fopen("index.html","w");if(fp!=NULL) 
+<TEXTO>=indice=				{
+					fp=fopen("index.html","w");if(fp!=NULL) 
 					fprintf(fp,"<!DOCTYPE html>\n<html>\n");
-					fprintf(fp,"<meta charset='utf-8'>\n <head><a href='./doc.html'>Documento</a></head> <hr> <p><h2>Indice</h2></p>\n<hr>\n");}
+					fprintf(fp,"<meta charset='utf-8'>\n <head><a href='./%s.html'>Documento</a></head> <hr> <p><h2>Indice</h2></p>\n<hr>\n",filename);}
 
 <TEXTO>^=+.*				{if (fp!=NULL){ int eqs=tit_nr(htmltext);
-					fprintf(fp,"<h3><a href='./doc.html#itag%d'>%s</a></h5>",tag_tit,htmltext+eqs);
+					fprintf(fp,"<h3><a href='./%s.html#itag%d'>%s</a></h5>",filename,tag_tit,htmltext+eqs);
 					printf("<a name='itag%d'> <h%d>%s</h%d> </a>\n",tag_tit,eqs,htmltext+eqs,eqs);
 					tag_tit++;}/*Caso contrário Erro*/}
 
@@ -119,8 +121,12 @@
 %%
 
 int main(int argc, char** argv){
-
-        htmllex();
+	if(argc>0){
+	 int leng=strlen(argv[1]);
+	 strncpy(filename,argv[1],leng);
+	 filename[leng]='\0';
+         htmllex();
+	}else printf("ERRO:not have arg:file name\n");
         return 0;
 }
 
