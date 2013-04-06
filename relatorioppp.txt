@@ -1,11 +1,10 @@
 =titulo=[Trabalho 1: Pré-processador para LaTeX ou HTML]
 =autor=[a61007 César Perdigão,a61009 Luís Caseiro,a61078 Pedro Maia]
-\bf{Abril 2013}
 
 
 =indice=
 
-\linha
+
 =Introdução
 
 
@@ -16,7 +15,7 @@ Após escolher o projeto o grupo começou por pesquisar um pouco sobre latex e h
 
 Após esta primeira fase o grupo começou por definir os comandos latex e html que eram necessários para o desenvolvimento do projeto por exemplo o comando = seguido de alguma coisa representa uma secção, == seguido de alguma coisa representa uma subsecção.
 
-\linha
+
 =LaTeX e Html
 
 
@@ -48,7 +47,10 @@ Para desenvolver subsecções basta colocar mais um simbolo \sic{=}
 \begin{verbatim} \bf{PalavrasaNegrito}  \end{verbatim}
 .Italico
 \begin{verbatim} \it{PalavrasaItalico}  \end{verbatim}
+.Links:
+\begin{verbatim} \link{url,text} \end{verbatim}	
 #
+Exemplo: \link{http://pt.wikipedia.org , wikipedia}
 
 
 ==Listas
@@ -94,7 +96,7 @@ O comando
 .Massa
 #
 
-.\bf{Lista descritiva:}
+.Lista descritiva:
 O comando
 \begin{verbatim}
 :d
@@ -165,7 +167,7 @@ Esta expressão permite obter o texto entre dois parenteses retos o que é útil
 \verb{=titulo= ou com o comando =autor=
 \end{verbatim}
 
-\linha
+
 =Conclusão
 Após a conclusão do projeto e ter feito todos os testes necessários o grupo concluiu que a relização do trabalho fez com que as suas habilidades com expressões regulares e com o programa \bf{flex} evoluissem.
 O que fez com que o grupo criasse um tradutor próprio para \it{LaTeX} e \it{HTML}.
@@ -173,4 +175,5 @@ O que fez com que o grupo criasse um tradutor próprio para \it{LaTeX} e \it{HTM
 Os resultados obtidos foram positivos pois conseguiram fazer com sucesso o que era pedido no enunciado do projeto, como foi dito anteriormente esta ferramenta poderá ser útil no futuro ao grupo.
 
 O maior contratempo na realização do projeto foi o periodo de interrupção de aulas que fez o grupo separar-se por algum tempo, atrasando um pouco o desenvolvimento do projeto.
+
 
