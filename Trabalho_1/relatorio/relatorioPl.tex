@@ -1,0 +1,283 @@
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage[latin1]{inputenc}
+
+\title{Trabalho 1: Pré-processador para LaTeX ou HTML}
+\author{a61007 César Perdigão \\ a61009 Luís Caseiro \\ a61078 Pedro Maia}
+\date{Abril 2013}
+
+\setcounter{secnumdepth}{5}
+\usepackage{verbatim}
+\usepackage{indentfirst}
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\chapter{Introdução}
+
+
+Após a saída do enunciado em que nos foi disponibilizado vários
+projetos o grupo decidiu realizar um pré-processador para LaTeX ou HTML, porque é um tema interessante e que pode vir a ajudar em muitos projetos que surgerão posteriormente, pois as competencias obtidas após a realização deste irão tornar um pouco mais facil e rápido o desenvolvimento de outros projetos em latex e html.
+
+Após escolher o projeto o grupo começou por pesquisar um pouco sobre latex e html e dividir-se de maneira a conseguir uma maior eficiencia de tempo.
+
+Após esta primeira fase o grupo começou por definir os comandos latex e html que eram necessários para o desenvolvimento do projeto por exemplo o comando = seguido de alguma coisa representa uma secção, == seguido de alguma coisa representa uma subsecção.
+
+A partir o grupo utilizou expressões regulares com o programa \textbf{flex} de maneira a realizar o que foi pedido por exemplo sempre que no inicio da linha apareça o simbolo = sabe-se que expressão a seguir se trata do titulo de uma secção.
+
+
+\chapter{LaTeX}
+\section{Comandos}
+\subsection{Cabeçalho}
+Para o cabeçalho especificamos os seguintes comandos:
+\begin{itemize}
+\item Título
+\begin{verbatim} =titulo=[titulodocumento] \end{verbatim} 
+Em que \textbf{=titulo=} substitui \verb{\title.
+\item Autor
+\begin{verbatim} =autor=[nomeAutor] \end{verbatim} 
+Em que \textbf{=autor=} substitui \verb{\author.
+\item Índice
+\begin{verbatim} =indice= \end{verbatim} 
+Em que \textbf{=indice=} substitui \verb{\tableofcontents.
+\item Secção e Subsecção
+\begin{verbatim} =nomeSecção \end{verbatim} 
+Em que \textbf{=nomeSecção} substitui \verb\section{nomeSecção}.
+Para desenvolver subsecções basta colocar mais um simbolo \verb{=
+\\ Por exemplo Em que \textbf{==nomeSubsecção} substitui \verb\subsection{nomeSubsecção}.
+\end{itemize}
+\subsection{Texto}
+\subsubsection{Formatação}
+\begin{itemize}
+\item Negrito 
+\begin{verbatim} \bf{PalavrasaNegrito}  \end{verbatim}
+Em que \verb\bf substitui \textbf.
+\item Italico
+\begin{verbatim} \it{PalavrasaItalico}  \end{verbatim}
+Em que \verb\it substitui \textit.
+\end{itemize}
+\subsubsection{Acentos e Verbatim}
+Os acentos e o Verbatim ficaram com a mesma sintaxe do LaTeX original pois o grupo decidiu não alterar a sintaxe destes.
+\subsection{Listas}
+\subsubsection{Listas de items}
+O comando :i seguido do final da linha irá começar uma lista de items. \\ Depois para começar um item basta colocar \textbf{.NomeItem}. Para terminar basta colocar o simbolo \verb{#.
+\\ \\
+
+Exemplo
+\begin{verbatim}
+    lista de items:i
+    .item1
+    .item2#
+    
+    Em LaTeX seria
+    lista de items
+    \begin{itemize}
+    \item item1
+    \item item2
+    \end{itemize}
+\end{verbatim}    
+\subsubsection{Listas Descritivas}
+O comando :d seguido do final da linha irá começar uma lista descritiva. \\ Depois para começar um item basta colocar \textbf{.[NomeItemDescritivo]}. Para terminar basta colocar o simbolo \\verb{#.
+\\ \\
+
+Exemplo
+\begin{verbatim}
+    lista de items:d
+    .[item1]
+    .[item2]#
+    
+    Em LaTeX seria
+    lista de items
+    \begin{description}
+    \item item1
+    \item item2
+    \end{description}
+\end{verbatim}
+\subsubsection{Listas Numeradas}
+O comando :n seguido do final da linha irá começar uma lista numerada. \\ Depois para começar um item basta colocar \textbf{.NomeItemNumerado}. Para terminar basta colocar o simbolo \verb{#.
+\\ \\
+
+Exemplo
+\begin{verbatim}
+    lista de items:n
+    .item1
+    .item2#
+    
+    Em LaTeX seria
+    lista de items
+    \begin{enumerate}
+    \item item1
+    \item item2
+    \end{enumerate}
+\end{verbatim}
+\subsection{Tabelas}
+\subsubsection{Com Fronteira}
+\begin{verbatim} \table[definições]ConteudoTabela \end{verbatim}
+\begin{verbatim}
+\begin{table}[h]
+\begin{tabular}{|definições}
+ConteudoTabela
+\end{tabular}
+\end{table}
+\end{verbatim}
+Quando se encontra dentro da tabela um \verb{\\ 
+siginifica que acabou uma linha e vai começãr outra, em LaTeX:
+\begin{verbatim} \\ \hline  \end{verbatim}
+\subsubsection{Sem Fronteira}
+\begin{verbatim} \tablen[definições]ConteudoTabela \end{verbatim}
+\begin{verbatim}
+\begin{table}[h]
+\begin{tabular}{definições}
+ConteudoTabela
+\end{tabular}
+\end{table}
+\end{verbatim}
+A única diferença entre os 2 tipos de tabela é se esta tem fronteira ou não.
+\subsection{Imagens}
+    \begin{verbatim} \image{figura} \end{verbatim}
+    Este comando vai clocar uma imagem no local em LaTeX vai ser:
+\begin{verbatim}
+\begin{figure}[h]
+\includegraphics{figura}
+\end{figure}
+\end{verbatim}
+\subsection{Links}
+\begin{verbatim} \link{linkaUsar} \end{verbatim}
+    Em que link em LaTeX é subtituido por \verb\url{linkaUsar}
+\chapter{HTML}
+\section{Comandos}
+\subsection{Cabeçalho}
+Para o cabeçalho especificamos os seguintes comandos:
+\begin{itemize}
+\item Título
+\begin{verbatim} =titulo=[titulodocumento] \end{verbatim} 
+Em que \textbf{=titulo=} substitui \verb{<h1>titulodocumento</h1>.
+\item Autor
+\begin{verbatim} =autor=[nomeAutor] \end{verbatim} 
+Em que \textbf{=autor=} substitui \verb{<author>nomeAutor</author>.
+\item Índice
+\begin{verbatim} =indice= \end{verbatim} 
+Em que \textbf{=indice=} é feito através do ficheiro index.html.
+\item Secção e Subsecção
+\begin{verbatim} =nomeSecção \end{verbatim} 
+Em que \textbf{=nomeSecção} substitui \verb{<h2> nomeSecção</h2>.
+Para desenvolver subsecções basta colocar mais um simbolo \verb{=.
+\\ Por exemplo Em que \textbf{==nomeSubsecção} substitui \verb{<h3>nomeSubsecção</h3>.
+\end{itemize}
+\subsection{Texto}
+\subsubsection{Formatação}
+\begin{itemize}
+\item Negrito 
+\begin{verbatim} \bf{PalavrasaNegrito}  \end{verbatim}
+Em que \verb\bf substitui <b>PalavrasaNegrito</b>.
+\item Italico
+\begin{verbatim} \it{PalavrasaItalico}  \end{verbatim}
+Em que \verb\it substitui <i>PalavrasaItalico</i>.
+\end{itemize}
+\subsubsection{Acentos e Verbatim}
+Os acentos e o Verbatim ficaram com a sintaxe original pois o grupo decidiu não alterar a sintaxe destes.
+\subsection{Listas}
+\subsubsection{Listas de items}
+O comando :i seguido do final da linha irá começar uma lista de items. \\ Depois para começar um item basta colocar \textbf{.NomeItem}. Para terminar basta colocar o simbolo \verb{#.
+\\ \\
+
+Exemplo
+\begin{verbatim}
+    lista de items:i
+    .item1
+    .item2#
+    
+    Em HTML seria
+    lista de items
+    <ul>
+    <li> item1 </li>
+    <li> item2 </li>
+    </ul>
+\end{verbatim}    
+\subsubsection{Listas Descritivas}
+O comando :d seguido do final da linha irá começar uma lista descritiva. \\ Depois para começar um item basta colocar \textbf{.[NomeItemDescritivo]}. Para terminar basta colocar o simbolo \\verb{#.
+\\ \\
+
+Exemplo
+\begin{verbatim}
+    lista de items:d
+    .[item1] descrição item1
+    .[item2] descrição item2 # 
+    
+    Em HTML seria
+    lista de items
+    <dl>
+    <dt> item1 </dt>
+    <dd> descrição item1 </dd>
+    <dt> item2 </dt>
+    <dd> descrição item2 </dd>
+    </dl>
+\end{verbatim}
+\subsubsection{Listas Numeradas}
+O comando :n seguido do final da linha irá começar uma lista numerada. \\ Depois para começar um item basta colocar \textbf{.NomeItemNumerado}. Para terminar basta colocar o simbolo \verb{#.
+\\ \\
+
+Exemplo
+\begin{verbatim}
+    lista de items:n
+    .item1
+    .item2#
+    
+    Em HTML seria
+    lista de items
+    <ol>
+    <li> item1 </li>
+    <li> item2 </li>
+    </ol>
+\end{verbatim}
+\subsection{Tabelas}
+\subsubsection{Com Fronteira}
+\begin{verbatim} \table[definições]ConteudoTabela \end{verbatim}
+\begin{verbatim}
+<table boarder=1>
+<tr><td>Conteudo</td></tr>
+</table>
+\end{verbatim}
+
+\subsubsection{Sem Fronteira}
+\begin{verbatim} \tablen[definições]ConteudoTabela \end{verbatim}
+\begin{verbatim}
+<table boarder=0>
+<tr><td>Conteudo</td></tr>
+</table>
+\end{verbatim}
+
+\subsection{Imagens}
+ \begin{verbatim} \image{figura} \end{verbatim}
+    Este comando vai clocar uma imagem no local em HTML vai ser:
+\begin{verbatim}
+<img src="figura">
+\end{verbatim}
+\subsection{Links}
+    \begin{verbatim} \link{linkaUsar} \end{verbatim}
+    Em que link em HTML é subtituido por \verb{ <a href=linkaUsar>linkaUsar</a>.
+\chapter{Expressões Regulares}
+Relativamente as expressões regulares o grupo utilizou os métodos aprendidos nas aulas da Unidade Curricular.
+
+Estes metodos permitiram utilizar expressões simples e o mais abrangentes possiveis de maneira a facilitar a leitura do código e obter bom desempenho do programa.
+
+Uma expressão utilizada pelo grupo foi a expressão \verb{\[[^\]]*\].
+Esta expressão permite obter o texto entre dois parenteses retos o que é útil com o comando \verb{=titulo= ou com o comando =autor=
+\chapter{Conclusão}
+Após a conclusão do projeto e ter feito todos os testes necessários o grupo concluiu que a relização do trabalho fez com que as suas habilidades com expressões regulares e com o programa \textbf{flex} evoluissem.
+O que fez com que o grupo criasse um tradutor próprio para LaTeX e HTML.
+
+Os resultados obtidos foram positivos pois conseguiram fazer com sucesso o que era pedido no enunciado do projeto, como foi dito anteriormente esta ferramenta poderá ser útil no futuro ao grupo.
+
+O maior contratempo na realização do projeto foi o periodo de interrupção de aulas que fez o grupo separar-se por algum tempo, atrasando um pouco o desenvolvimento do projeto.
+\bibliographystyle{plain}
+\bibliography{references}
+
+
+\url{http://www3.di.uminho.pt/~jcr/AULAS/plc2008/tp1/ppp.html#ind10}
+
+\end{document}

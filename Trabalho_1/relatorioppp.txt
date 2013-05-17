@@ -1,0 +1,179 @@
+=titulo=[Trabalho 1: Pré-processador para LaTeX ou HTML]
+=autor=[a61007 César Perdigão,a61009 Luís Caseiro,a61078 Pedro Maia]
+
+
+=indice=
+
+
+=Introdução
+
+
+Após a saída do enunciado em que nos foi disponibilizado vários
+projetos o grupo decidiu realizar um pré-processador para LaTeX ou HTML, porque é um tema interessante e que pode vir a ajudar em muitos projetos que surgerão posteriormente, pois as competencias obtidas após a realização deste irão tornar um pouco mais facil e rápido o desenvolvimento de outros projetos em latex e html.
+
+Após escolher o projeto o grupo começou por pesquisar um pouco sobre latex e html e dividir-se de maneira a conseguir uma maior eficiencia de tempo.
+
+Após esta primeira fase o grupo começou por definir os comandos latex e html que eram necessários para o desenvolvimento do projeto por exemplo o comando = seguido de alguma coisa representa uma secção, == seguido de alguma coisa representa uma subsecção.
+
+
+=LaTeX e Html
+
+
+==Comandos
+===Cabeçalho
+Para o cabeçalho especificamos os seguintes comandos:
+:i
+.Titulo 
+\begin{verbatim} =titulo=[titulodocumento] 
+\end{verbatim} Em que substitui  \sic{\title}.
+.Autor
+\begin{verbatim} =autor=[nomeAutor]
+\end{verbatim}
+.Índice
+\begin{verbatim} =indice= \end{verbatim}
+
+.Secção e Subsecção
+\begin{verbatim} =nomeSecção
+\end{verbatim} 
+Para desenvolver subsecções basta colocar mais um simbolo \sic{=}
+#
+
+==Texto
+
+
+===Formatação
+:i
+.Negrito 
+\begin{verbatim} \bf{PalavrasaNegrito}  \end{verbatim}
+.Italico
+\begin{verbatim} \it{PalavrasaItalico}  \end{verbatim}
+.Links:
+\begin{verbatim} \link{url,text} \end{verbatim}	
+#
+Exemplo: \link{http://pt.wikipedia.org , wikipedia}
+
+
+==Listas
+:i
+.Listas de items:
+O comando
+\begin{verbatim}
+:i 
+\end{verbatim} seguido do final da linha irá começar uma lista de items.Depois para começar um item basta colocar \sic{.NomeItem} Para terminar basta colocar o simbolo \sic{#}
+	Exemplo:
+
+\begin{verbatim}
+:i
+.Leite
+.Massa
+#
+\end{verbatim}
+
+
+	Resultado:
+:i
+.Leite
+.Massa
+#
+
+.Lista numerada:
+O comando
+\begin{verbatim}
+:n 
+\end{verbatim} seguido do final da linha irá começar uma lista númerada.Depois para começar um item basta colocar \sic{.NomeItem} Para terminar basta colocar o simbolo \sic{#}
+	Exemplo:
+\begin{verbatim}
+:n
+.Leite
+.Massa
+#
+\end{verbatim}
+
+
+	Resultado:
+:n
+.Leite
+.Massa
+#
+
+.Lista descritiva:
+O comando
+\begin{verbatim}
+:d
+\end{verbatim}seguido do final da linha irá começar uma lista descritiva.Depois para começar um item basta colocar \sic{.[TextoP]Texto a descrever} Para terminar basta colocar o simbolo \sic{#}
+	Exemplo:
+\begin{verbatim}
+:d
+.[Leite]Emabalegem
+.[Massa]Esparguete
+#
+\end{verbatim}
+
+	Resultado:
+:d
+.[Leite]Emabalegem
+.[Massa]Esparguete
+#
+
+#
+
+==Tabelas
+
+\sic{\table} 
+ou
+\sic{\tablen[(l|c|r)]]}-Varia conforme tablen-sem linha ou table-com linha, argumentos de entrada é conforme o número de colunas, e se quer o texto left center ou rigth.
+
+\sic{ & }
+
+	Para mudar coluna.
+\sic{ \\ }
+	Para mudar de linha,
+\sic{\endTable}
+	Para o final da tabela.
+
+	Exemplo:
+
+\begin{verbatim}
+\table[rr]
+Elemento1 & Elemento2\\
+Elemento1 & Elemento2\\
+\endtable
+\end{verbatim}
+
+	Resultado:
+\table[rr]
+Elemento1 & Elemento2\\
+Elemento1 & Elemento2\\
+\endtable
+
+==Imagens
+\begin{verbatim}
+\image{Url_figura}
+\end{verbatim}
+Para a figura basta adicionar o url, ficando assim :
+\image{teste.jpg}
+
+
+=Expressões Regulares
+
+Relativamente as expressões regulares o grupo utilizou os métodos aprendidos nas aulas da Unidade Curricular.
+
+Estes metodos permitiram utilizar expressões simples e o mais abrangentes possiveis de maneira a facilitar a leitura do código e obter bom desempenho do programa.
+
+Uma expressão utilizada pelo grupo foi a expressão \sic{[[^\]]*\]}.
+Esta expressão permite obter o texto entre dois parenteses retos o que é útil com o comando:
+
+\begin{verbatim}
+\verb{=titulo= ou com o comando =autor=
+\end{verbatim}
+
+
+=Conclusão
+Após a conclusão do projeto e ter feito todos os testes necessários o grupo concluiu que a relização do trabalho fez com que as suas habilidades com expressões regulares e com o programa \bf{flex} evoluissem.
+O que fez com que o grupo criasse um tradutor próprio para \it{LaTeX} e \it{HTML}.
+
+Os resultados obtidos foram positivos pois conseguiram fazer com sucesso o que era pedido no enunciado do projeto, como foi dito anteriormente esta ferramenta poderá ser útil no futuro ao grupo.
+
+O maior contratempo na realização do projeto foi o periodo de interrupção de aulas que fez o grupo separar-se por algum tempo, atrasando um pouco o desenvolvimento do projeto.
+
+
