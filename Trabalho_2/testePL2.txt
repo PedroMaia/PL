@@ -1,0 +1,90 @@
+<report>
+<fm>
+	<title>
+		Teste
+	</title>
+	<subtitle>
+		Teste
+	</subtitle>
+	<author>
+		<name>
+			Royal Marine
+		</name>
+		<nident>
+			123456789
+		</nident>
+		<email>
+			marine@marine.com
+		</email>
+		<url>
+			rmarine.website.com
+		</url>
+		<affiliation>
+			Pesca da madeira
+		</affiliation>
+	</author>
+	<date>
+		junho 2013
+	</date>
+	<inst>
+		Uminho
+	</inst>
+	<keyw>
+		Royal
+	</keyw>
+	<abs>
+		<para>
+			Isto é um relatorio
+		</para>
+		<para>
+			Isto é um relatorio
+		</para>
+	</abs>
+	<akn>
+		<para>
+			Agradecimentos a todo o grupo
+		</para>
+		<para>
+			Agradecimentos a todo o grupo
+		</para>
+		<para>
+			Agradecimentos a todo o grupo
+		</para>
+	</akn>
+</fm>
+<body>
+	<chap>
+		<title>
+			capitulo 1
+		</title>
+		<sec>
+			<title>
+			seccao 1
+			</title>
+			<para>
+				<bold> isto é negrito </bold>
+				<italic> isto é italico </italic>
+				<underline> underline </underline>
+			</para>
+		</sec>		
+	</chap>
+	<chap>
+		<title>
+			capitulo 2
+		</title>
+		<sec>
+			<title>
+			seccao 2
+			</title>
+			<fig>
+				<graph>
+					
+				</graph>
+				<caption>
+					Figura 1
+				</caption>
+			</fig>
+		</sec>
+	</chap>		
+</body>
+</report>
