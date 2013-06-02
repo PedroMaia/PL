@@ -205,7 +205,7 @@ int yyerror(){
 	
 
 
-	fprintf(stderr, "Erro sintatico:(%s) na linha:%d",yytext, yylineno);
+	fprintf(stderr, "Erro sintatico:(%s) na linha:%d \n",yytext, yylineno);
 	return 1;
 }
 

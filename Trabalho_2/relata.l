@@ -1,5 +1,5 @@
 %option noyywrap
-
+%option yylineno
 %{
 	#include "relata.tab.h"
 %}

@@ -1,5 +1,6 @@
 relata:relata.tab.c lex.yy.c
 	gcc relata.tab.c -o relata
+	pdflatex main.tex
 
 
 relata.tab.c: relata.y
