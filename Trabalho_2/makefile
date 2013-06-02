@@ -1,11 +1,6 @@
-relata:relata.tab.o lex.yy.o
-	gcc relata.tab.o lex.yy.o -o relata -ly -lm
+relata:relata.tab.c lex.yy.c
+	gcc relata.tab.c -o relata
 
-relata.tab.o: relata.tab.c
-	gcc -c relata.tab.c
-
-lex.yy.o: lex.yy.c
-	gcc -c lex.yy.c
 
 relata.tab.c: relata.y
 	bison -d relata.y
