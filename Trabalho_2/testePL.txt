@@ -1,0 +1,148 @@
+<report>
+<fm>
+	<title>
+		Teste
+	</title>
+	<subtitle>
+		Teste nº1
+	</subtitle>
+	<author>
+		<name>
+			Chuck Norris
+		</name>
+		<nident>
+			123456789
+		</nident>
+		<email>
+			chucknorris@mail.com
+		</email>
+		<url>
+			chucknorris.website.com
+		</url>
+		<affiliation>
+			Ranger e agente da CIA
+		</affiliation>
+	</author>
+	<date>
+		junho 2013
+	</date>
+	<inst>
+		Uminho
+	</inst>
+	<keyw>
+		Chuck
+	</keyw>
+	<abs>
+		<para>
+			Este relatorio retrata eventos da vida da figura mundial Chuck Norris
+		</para>
+		<para>
+			Este relatorio retrata eventos da vida da figura mundial Chuck Norris
+		</para>
+	</abs>
+	<akn>
+		<para>
+			Agradecimentos a todo o grupo
+		</para>
+		<para>
+			Agradecimentos a todo o grupo
+		</para>
+		<para>
+			Agradecimentos a todo o grupo
+		</para>
+	</akn>
+</fm>
+<body>
+	<chap>
+		<title>
+			capitulo 1
+		</title>
+		<sec>
+			<title>
+			seccao 1
+			</title>
+			<para>
+				<bold> isto é negrito </bold>
+				<italic> isto é italico </italic>
+				<underline> underline </underline>
+				<ref>
+					<url>
+						http://elearning.uminho.pt/bbcswebdav/pid-395150-dt-content-rid-507068_1/courses/1213.8206N5_2/pl1213-tp2.pdf
+					</url>
+				</ref>
+				<xref>
+					<url>
+						http://elearning.uminho.pt/bbcswebdav/pid-395150-dt-content-rid-507068_1/courses/1213.8206N5_2/pl1213-tp2.pdf
+					</url>
+				</xref>
+				<cit>
+					<url>
+						http://elearning.uminho.pt/bbcswebdav/pid-395150-dt-content-rid-507068_1/courses/1213.8206N5_2/pl1213-tp2.pdf
+					</url>
+				</cit>
+				<iterm>
+					texto iterm
+				</iterm>
+			</para>
+		</sec>		
+	</chap>
+	<chap>
+		<title>
+			capitulo 2
+		</title>
+		<sec>
+			<title>
+			seccao 2
+			</title>
+			<fig>
+				<graph>
+					<url>
+						C:\Users\Paxaxa\Desktop
+					</url>
+				</graph>
+				<caption>
+					Figura 1
+				</caption>
+			</fig>
+			<table>
+				<caption>
+					Figura 1
+				</caption>
+				<trow>
+					<tdata>
+						Celula 1
+					</tdata>
+					<tdata>
+						Celula 2
+					</tdata>
+					<tdata>
+						Celula 3
+					</tdata>	
+				</trow>
+				<trow>
+					<tdata>
+						Celula 1
+					</tdata>
+					<tdata>
+						Celula 2
+					</tdata>
+					<tdata>
+						Celula 3
+					</tdata>	
+				</trow>
+				<trow>
+					<tdata>
+						Celula 1
+					</tdata>
+					<tdata>
+						Celula 2
+					</tdata>
+					<tdata>
+						Celula 3
+					</tdata>	
+				</trow>
+			</table>
+		</sec>		
+	</chap>
+</body>
+</report>
