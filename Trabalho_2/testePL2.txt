@@ -52,6 +52,8 @@
 		</para>
 	</akn>
 	<toc/>
+	<lof/>
+	<lot/>
 </fm>
 <body>
 	<chap>
@@ -85,6 +87,90 @@
 					Figura 1
 				</caption>
 			</fig>
+			<fig>
+				<graph>
+					/home/cesar/Imagens/piano.jpg
+				</graph>
+				<caption>
+					Figura 2
+				</caption>
+			</fig>
+			<table>
+				<caption>
+					Tabela 1
+				</caption>
+				<trow>
+					<tdata>
+						Celula11
+					</tdata>
+					<tdata>
+						Celula12
+					</tdata>
+					<tdata>
+						Celula13
+					</tdata>
+				</trow>
+				<trow>
+					<tdata>
+						Celula21
+					</tdata>
+					<tdata>
+						Celula22
+					</tdata>
+					<tdata>
+						Celula23
+					</tdata>
+				</trow>
+				<trow>
+					<tdata>
+						Celula31
+					</tdata>
+					<tdata>
+						Celula32
+					</tdata>
+					<tdata>
+						Celula33
+					</tdata>
+				</trow>			
+			</table>
+			<table>
+				<caption>
+					Tabela 2
+				</caption>
+				<trow>
+					<tdata>
+						Celula11
+					</tdata>
+					<tdata>
+						Celula12
+					</tdata>
+					<tdata>
+						Celula13
+					</tdata>
+				</trow>
+				<trow>
+					<tdata>
+						Celula21
+					</tdata>
+					<tdata>
+						Celula22
+					</tdata>
+					<tdata>
+						Celula23
+					</tdata>
+				</trow>
+				<trow>
+					<tdata>
+						Celula31
+					</tdata>
+					<tdata>
+						Celula32
+					</tdata>
+					<tdata>
+						Celula33
+					</tdata>
+				</trow>			
+			</table>
 		</sec>
 	</chap>		
 </body>

@@ -10,6 +10,8 @@
 	int mode=MODE_INDEX;
 	int footnoteNo=0;
 	int nindex=0;
+	int nindexf=0;
+	int nindext=0;
 %}
 
 %token BREPORT EREPORT BFM EFM BTITLE ETITLE BSUBTITLE ESUBTITLE BAUTHOR EAUTHOR BNAME ENAME BNIDENT ENIDENT BEMAIL EEMAIL BURL EURL BAFFILIATION EAFFILIATION BABS EABS BAKN EAKN TOC LOF LOT BBODY EBODY BCHAP ECHAP BSEC ESEC BPARA EPARA BREF EREF BXREF EXREF BCIT ECIT BITERM EITERM BBOLD EBOLD BITALIC EITALIC BUNDERLINE EUNDERLINE BFIG EFIG BGRAPH EGRAPH BCAPTION ECAPTION BTABLE ETABLE BTROW ETROW BTDATA ETDATA TEXTO BDATE EDATE BINST EINST BKEYW EKEYW BFORMAT EFORMAT BLIST ELIST BITEM EITEM BACRON EACRON BCODE ECODE BCODEL ECODEL BFOOT EFOOT BSUMMARY ESUMMARY
@@ -29,7 +31,6 @@
 
 Report: BREPORT {if(mode==MODE_REPORT){
 	printf("<!DOCTYPE html>\n<html>\n <a href='./index.html'>Indice</a> ");
-	/*Para os acentos*/
 	printf("<meta charset='utf-8'>\n");
 	printf("<html><body>");}} 
 	FrontMatter Body BackMatter EREPORT {if(mode==MODE_REPORT) printf("</body></html>");}'$' {return 0;};
@@ -76,8 +77,8 @@ Abstract: BABS {if(mode==MODE_REPORT) printf("<hr>"); } ParaList EABS;
 Aknowledgements: BAKN {if(mode==MODE_REPORT) printf("<hr>"); } ParaList EAKN;
 
 Toc: TOC {if(mode==MODE_REPORT) printf("<hr><h2>Índice</h2> %s",toc);} | ;
-Lof:LOF {if(mode==MODE_REPORT) printf("%s",lof);} | ;
-Lot: LOT {if(mode==MODE_REPORT) printf("%s",lot);} | ;
+Lof:LOF {if(mode==MODE_REPORT) printf("<hr><h2> Lista de Figuras</h2> %s",lof);} | ;
+Lot: LOT {if(mode==MODE_REPORT) printf("<hr><h2> Lista de Tabelas</h2> %s",lot);} | ;
 
 Body: BBODY ChapterList EBODY;
 ChapterList: ChapterList Chapter
@@ -147,10 +148,14 @@ UContent: UContent TEXTO {if(mode==MODE_REPORT) printf("%s",$2);}
 
 Float: Figure|Table;
 
-Figure: BFIG {if(mode==MODE_REPORT) printf("<figure>");} Graphic Caption EFIG 
+Figure: BFIG {if(mode==MODE_REPORT) {printf("<figure><a name=\"indf%d\">",nindexf);nindexf++;}} Graphic Caption EFIG 
 	{if(mode==MODE_REPORT) {
 		printf("<figcaption>%s</figcaption>\n",$4);
-		printf("</figure>");
+		printf("</a></figure>");
+	}else{
+		sprintf(temp,"<h5><p><a href=\"#indf%d\"> %s </a></p></h5>\n",nindexf,$4);
+		strcat(lof,temp);
+		nindexf++;
 	}};
 Graphic: BGRAPH TEXTO EGRAPH {if(mode==MODE_REPORT) printf("<img src=\"%s\">",$2);};
 
@@ -168,7 +173,28 @@ CodeBlock: BCODE TEXTO ECODE{if(mode==MODE_REPORT) printf("<p><code> %s </code><
 
 InlineCode: BCODEL TEXTO ECODEL{if(mode==MODE_REPORT) printf("<code> %s </code>\n",$2);};
 
-Table: ;
+Table: BTABLE 
+	{{if(mode==MODE_REPORT) {printf("<table border=\"1\"><a name=\"indt%d\">",nindext);nindext++;}}}
+	Caption TRowList ETABLE 
+	{if(mode==MODE_REPORT){
+		printf("<caption> %s <caption></a></table>",$3);
+	}else{
+		sprintf(temp,"<h5><p><a href=\"#indt%d\"> %s </a></p></h5>\n",nindext,$3);
+		strcat(lot,temp);
+		nindext++;	
+	}};
+
+TRowList: TRowList TRow 
+	|TRow;
+
+TRow: BTROW {if(mode==MODE_REPORT) printf("<tr>");} TDataList ETROW {if(mode==MODE_REPORT) printf("</tr>");};
+
+TDataList: TDataList TData
+	| TData;
+
+TData: BTDATA {if(mode==MODE_REPORT) printf("<td>");} ParaContent ETDATA {if(mode==MODE_REPORT) printf("</td>");};
+
+
 
 BackMatter: ;
 
@@ -192,6 +218,8 @@ int main(int argc, char **argv){
 	yyparse();
 	mode=MODE_REPORT;
 	nindex=0;
+	nindexf=0;
+	nindext=0;
 	fseek(yyin,0,SEEK_SET);
 	yyparse();
 }
