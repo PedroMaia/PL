@@ -68,7 +68,36 @@
 				<bold> isto é negrito </bold>
 				<italic> isto é italico </italic>
 				<underline> underline </underline>
+				<codel> _Linha_nao///formatada </codel>
 			</para>
+			<acron>
+				
+			</acron>
+			<list>
+				<item>
+					item1
+				</item>
+				<item>
+					item1
+				</item>
+				<item>
+					item1
+				</item>
+			</list>
+			<list>
+				<item>
+					item1
+				</item>
+				<item>
+					item1
+				</item>
+				<item>
+					item1
+				</item>
+			</list>
+			<code>
+				isto_é_texto_não_formatado
+			</code>
 		</sec>		
 	</chap>
 	<chap>
