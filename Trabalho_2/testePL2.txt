@@ -51,6 +51,7 @@
 			Agradecimentos a todo o grupo
 		</para>
 	</akn>
+	<toc/>
 </fm>
 <body>
 	<chap>
@@ -78,7 +79,7 @@
 			</title>
 			<fig>
 				<graph>
-					
+					/home/cesar/Imagens/piano.jpg
 				</graph>
 				<caption>
 					Figura 1

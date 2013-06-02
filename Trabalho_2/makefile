@@ -7,3 +7,10 @@ relata.tab.c: relata.y
 
 lex.yy.c: relata.l
 	flex relata.l
+
+clean:
+	-rm relata
+	-rm lex.yy.c
+	-rm relata.tab.c
+	-rm relata.tab.h
+	-rm *.html
